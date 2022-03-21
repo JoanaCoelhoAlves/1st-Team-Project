@@ -66,25 +66,6 @@ df_logistic.corr()
 #conclusion: there is a positive correlation amon qty_ordered and qty_availability
 #and a large effect. This means that if the quantity ordered increases tha available quantity also increases
 
-# Code source geeksforgeeks.org/plotting-multiple-bar-charts-using-matplotlib-in-python/
-# Add new column freq column about see range value or the max available qty and qty ordered
-x_axis = df_logistic["productCode"].index.values
-
-plt.bar(x_axis + 0.2, df_logistic["qty_ordered"] , 0.4, label = 'Ordered')
-plt.bar(x_axis - 0.2, df_logistic["available_qty"], 0.4, label = 'Available')
-plt.legend()
-
-plt.xticks(\
-           # set the position of elements\
-           x_axis,\
-           # set labals names\
-           df_logistic["productCode"])
-plt.xlabel("Product code")
-plt.ylabel("Quantity")
-plt.title("The stock of the 5 most ordered products.")
-plt.show()
-
-
 # Use panda to create plot
 # Set index to have the right xtiks
 df_logistic.set_index("productCode").plot(kind="bar", \
