@@ -208,7 +208,7 @@ finance2_plot=finance2_plot.groupby(["year", "month"]).count()
 finance2_plot.head(20)
 
 finance2_plot.unstack(level=0).plot(kind="bar",  rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
-
+plt.show()
 
 
 """
