@@ -7,12 +7,12 @@ Original file is located at
     https://colab.research.google.com/drive/1FRPmPH4y24A0vxSuqqQa6ZBOR1NU6C9U
 """
 
-!pip install mysql-connector
+#!pip install mysql-connector
 
 # Import libraries
 import mysql.connector
 import pandas as pd
-
+import streamlit as st
 import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
@@ -56,12 +56,12 @@ df_logistic.info()
 
 
 #startthe index on 1 instead on 0
-df_logistic.index = df_logistic.index +1 
+df_logistic.index = df_logistic.index +1
 df_logistic.head(5)
 
 
-#check the correlation 
-df_logistic.corr()
+#check the correlation
+st.write(df_logistic.corr())
 
 #conclusion: there is a positive correlation amon qty_ordered and qty_availability
 #and a large effect. This means that if the quantity ordered increases tha available quantity also increases
@@ -73,7 +73,7 @@ df_logistic.set_index("productCode").plot(kind="bar", \
                  xlabel="Product code",\
                  # SET xtick normal rotation\
                  rot=0,\
-                 # Fct legend to set right datas  
+                 # Fct legend to set right datas
                  ylabel="Quantity").legend(["Ordered", "Available"])
 
 """
@@ -107,11 +107,11 @@ df_finance1
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
 
 #reset the index to start at 1 and not at 0
-#df_finance1.index = df_finance1.index +1 
+#df_finance1.index = df_finance1.index +1
 
 df_finance1.head(7)
 
-#create the bar chart 
+#create the bar chart
 df_finance1.plot.bar(x="country", y="turnover (€)", title= "The turnover of the orders in the last two months, by country", ylabel= "turnover (€)", legend = False,figsize= (10, 3))
 
 """
@@ -138,59 +138,54 @@ AND NOT status = "cancelled";' \
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
 
-df_finance2.info()
-
-#convert orderDate into a date 
+#convert orderDate into a date
 #df_finance2["orderDate"] = pd.to_datetime(df_finance2["orderDate"], yearfirst=True)
 
-#convert shippedDate into a date 
+#convert shippedDate into a date
 #df_finance2["shippedDate"] = pd.to_datetime(df_finance2["shippedDate"], yearfirst=True)
 
-#check if the variable type changed 
+#check if the variable type changed
 #df_finance2.info()
 
-#NOTE: order 10334 is "ON HOLD" without shipped date (which is fine) however order 
-#10165 has exactly the same comment as order 10334 but it was already Shipped conatining a 
-#"Shipped Date" so there is dubious information regarding the interpretation of the data set 
-#because of that we decided to not assign any value to missing comments since comments 
-#are not mandatory 
+#NOTE: order 10334 is "ON HOLD" without shipped date (which is fine) however order
+#10165 has exactly the same comment as order 10334 but it was already Shipped conatining a
+#"Shipped Date" so there is dubious information regarding the interpretation of the data set
+#because of that we decided to not assign any value to missing comments since comments
+#are not mandatory
 
 #create a new variable "Lag" which is the difference between shipped date and order date
 df_finance2["Lag"] = df_finance2["shippedDate"] - df_finance2["orderDate"]
 df_finance2.head(5)
-df_finance2.info()
 
 maximum_lag= max(df_finance2["Lag"])
 minimum_lag = min(df_finance2["Lag"])
 print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag time is: " + str(minimum_lag) + "\n")
 
-#convert order date and shipped date to a date type donne 
-#state that order 10334 is "ON HOLD" without shipped date (which is fine) however order 10165 has exactly the same comment  donne 
+#convert order date and shipped date to a date type donne
+#state that order 10334 is "ON HOLD" without shipped date (which is fine) however order 10165 has exactly the same comment  donne
 #but it's "Shipped" with a "Shipped Date" so there is an error on the original dataset which is comething to be discussed with the firm
 
-#add a new column with the time difference between shipped date and order date to see the lag donne 
-#go to SQL and add a new column with the order amount(in money) it is on due and order customers (customer number) by DESC order to see which 
-#clients are more "dangerous" NEED TO BE DONNED 
+#add a new column with the time difference between shipped date and order date to see the lag donne
+#go to SQL and add a new column with the order amount(in money) it is on due and order customers (customer number) by DESC order to see which
+#clients are more "dangerous" NEED TO BE DONNED
 
-#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month 
+#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month
 #and do a line chart (x-axis is the months and the y-axis is the frequency of the new variable based on the OrderDate)
 #present the missing values on variable "comments" and variable "shippedDate" and state that we saw the missing values but decided not to do nothing (and explain why)
 
 
-
-#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month 
+#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
-
 
 #create the bar plot where on the x-axis are the months and the y-axis the frequency of the orders
 finance2_plot= df_finance2.loc[:, ["orderDate", "month", "year"]]
 finance2_plot=finance2_plot.groupby(["year", "month"]).count()
 finance2_plot.head(20)
 
-finance2_plot.unstack(level=0).plot(kind="bar",  rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
-plt.show()
-
+fig, ax = plt.subplots()
+finance2_plot.unstack(level=0).plot(kind="bar", ax= ax, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+st.pyplot(fig)
 
 """
 ## Sales
@@ -215,7 +210,7 @@ df_sales.head(10)
 
 #need to split the table into 2: the first one only contains values from the year 2020 and 2021
 #the second table only contains values from the tear 2021 and 2022 and then calculate the rate difference
-#make a line plot for each product line and differentiate different products with a different color and make 
+#make a line plot for each product line and differentiate different products with a different color and make
 #a second differentiation in terms of dash(something else) lines
 #y-axis rate and x-axis with the months
 #check the product line with the highest and lowest rate
@@ -253,8 +248,8 @@ SELECT * FROM t1 \
   WHERE position < 3 \
   ORDER BY year DESC, month DESC, position;'
 
-#make a frequency table that show the seller_id and the amount of times 
-#he/she hows up in the top seller table 
+#make a frequency table that show the seller_id and the amount of times
+#he/she hows up in the top seller table
 #calculate the total amount of sales per seller_id and organize it (possible tool for future rewards)
 #make a bar plot where we have a bar for each year and make the differentuation based on the bar color
 #the x-axis would represent the mounts and the y-axis the sum of the 2 top sellers (amount variable)
@@ -267,17 +262,17 @@ df_hr.head()
 # Group with amout
 gp_with_amount = df_hr.groupby(['year', 'seller_id', 'seller_first_name', 'seller_last_name'], as_index=False)["amount"].sum()\
 .sort_values('seller_id')
-# Get count per position 
+# Get count per position
 gp_postion_one = df_hr[df_hr['position'] == 1].groupby(["seller_id", "year"], as_index=False)['position'].count()
 # # set columns name
-gp_postion_one.columns = ['seller_id', 'year', 'N 1st pos']  
+gp_postion_one.columns = ['seller_id', 'year', 'N 1st pos']
 gp_postion_two = df_hr[df_hr['position'] == 2].groupby(["seller_id", "year"], as_index=False)['position'].count()
 # # set columns name
 gp_postion_two.columns = ['seller_id', 'year', 'N 2nd pos']
 # # Combine tables
 gp_with_amount = pd.merge(gp_with_amount, gp_postion_one, how = "left")
 gp_with_amount = pd.merge(gp_with_amount, gp_postion_two, how = "left")
-# Correction after merge's errors of 
+# Correction after merge's errors of
 gp_with_amount.fillna(0, inplace=True)
 gp_with_amount['N 2nd pos'] = gp_with_amount['N 2nd pos'].astype("int32")
 gp_with_amount['N 1st pos'] = gp_with_amount['N 1st pos'].astype("int32")
