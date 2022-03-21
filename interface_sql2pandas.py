@@ -198,8 +198,6 @@ print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag t
 
 
 #create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month 
-import seaborn as sn
-
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 
@@ -209,18 +207,7 @@ finance2_plot= df_finance2.loc[:, ["orderDate", "month", "year"]]
 finance2_plot=finance2_plot.groupby(["year", "month"]).count()
 finance2_plot.head(20)
 
-import matplotlib.pyplot as plt
-
-#airbnb_groupby = airbnb.groupby(['overall_satisfaction', 'accommodates']).agg('count')['reviews']
-#airbnb_groupby.unstack(level = 0).plot(kind='bar', subplots=True, rot=0, figsize=(20,8), layout=(1, 9))
-#plt.tight_layout()
-
-finance2_groupby = finance2.groupby(["year", "month"]).agg("")
-#plt.bar(finance2_plot, height= "or, title= "Number of Orders per month", xlabel= "Months", legend = False,figsize= (10, 3))
-#fig, ax = plt.figure()
-#finance2_plot.unstack(level=0).plot(kind="bar", ax = ax, subplot=True, rot = 0, layout= (3,12), figuresize=(16,12))
-
-#plt.bar(x = finance2_plot["month"], height= finance2_plot["orderDate"],color= "blue")
+finance2_plot.unstack(level=0).plot(kind="bar",  rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
 
 
 
