@@ -128,12 +128,17 @@ df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 
 
-finance2_plot= df_finance2.loc[:, ["orderDate", "month", "year"]]
-finance2_plot=finance2_plot.groupby(["year", "month"]).count()
-
 fig4, ax4 = plt.subplots()
-finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
+plt.title("Number of Orders per Month", size = 12)
+plt.ylabel("Frequency")
+plt.xlabel("Month")
+plt.legend(loc = "upper center", frameon = True, title= "Year") 
+plt.rcParams["figure.figsize"] = (10,5.5)
 st.pyplot(fig4)
+
+#finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+
 
 """
 ## Sales
