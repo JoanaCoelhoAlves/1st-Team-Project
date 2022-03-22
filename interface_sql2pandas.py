@@ -208,12 +208,3 @@ gp_perf_year = df_hr.groupby(['year','month'], as_index=False)["amount"].sum()
 st.write("Position and turnover by month")
 df_hr
 
-for y in gp_perf_year['year'].unique():
-  pl = gp_perf_year[gp_perf_year['year'] == y]
-  plt.plot(pl['month'], pl['amount'], label=str(y) )
-plt.xticks(df_hr['month'].unique())
-plt.ylabel("Amount")
-plt.xlabel("Month")
-plt.title("Performence of sellers during a year")
-plt.legend()
-plt.show()
