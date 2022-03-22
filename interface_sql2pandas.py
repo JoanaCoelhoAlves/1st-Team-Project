@@ -188,38 +188,29 @@ SELECT * FROM t1 \
   WHERE position < 3 \
   ORDER BY year DESC, month DESC, position;'
 
-#make a frequency table that show the seller_id and the amount of times
-#he/she hows up in the top seller table
-#calculate the total amount of sales per seller_id and organize it (possible tool for future rewards)
-#make a bar plot where we have a bar for each year and make the differentuation based on the bar color
-#the x-axis would represent the mounts and the y-axis the sum of the 2 top sellers (amount variable)
-#so for each month we have 3 bars with different colors
-
 # sql to pandas
 df_hr = pd.read_sql_query(query_hr, con = connection)
-df_hr.head()
-
-# Group with amout
 gp_with_amount = df_hr.groupby(['year', 'seller_id', 'seller_first_name', 'seller_last_name'], as_index=False)["amount"].sum()\
 .sort_values('seller_id')
-# Get count per position
 gp_postion_one = df_hr[df_hr['position'] == 1].groupby(["seller_id", "year"], as_index=False)['position'].count()
-# # set columns name
 gp_postion_one.columns = ['seller_id', 'year', 'N 1st pos']
 gp_postion_two = df_hr[df_hr['position'] == 2].groupby(["seller_id", "year"], as_index=False)['position'].count()
-# # set columns name
 gp_postion_two.columns = ['seller_id', 'year', 'N 2nd pos']
-# # Combine tables
 gp_with_amount = pd.merge(gp_with_amount, gp_postion_one, how = "left")
 gp_with_amount = pd.merge(gp_with_amount, gp_postion_two, how = "left")
-# Correction after merge's errors of
 gp_with_amount.fillna(0, inplace=True)
 gp_with_amount['N 2nd pos'] = gp_with_amount['N 2nd pos'].astype("int32")
 gp_with_amount['N 1st pos'] = gp_with_amount['N 1st pos'].astype("int32")
 gp_with_amount = gp_with_amount.round(2)
-gp_with_amount.head(50)
 
 gp_perf_year = df_hr.groupby(['year','month'], as_index=False)["amount"].sum()
+
+st.write("Position and turnover by month")
+df_hr
+
+st.write("Position and turnover in all the years")
+gp_with_amount
+
 for y in gp_perf_year['year'].unique():
   pl = gp_perf_year[gp_perf_year['year'] == y]
   plt.plot(pl['month'], pl['amount'], label=str(y) )
