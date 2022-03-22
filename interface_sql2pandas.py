@@ -30,8 +30,8 @@ from matplotlib import pyplot as plt
 connection = mysql.connector.connect(**st.secrets["mysql"])
 #query = "SELECT * from orders WHERE orderDate like '2022-02%'"
 
-"""## Logistic: The stock of the 5 most ordered products.
-
+"""## Logistic
+    The stock of the 5 most ordered products
 """
 
 # \ to go to the new line if the code is too long
@@ -46,44 +46,25 @@ query_logistic = \
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic
 
-df_logistic.info()
-
-#change the qty_ordered from a float variable to an intenger variable
-#change the index column, instead of starting in 0 we want to start at 1
-#check correlation among variables
-
-#transform the qty_order from a float to an int
+# Define logistic data
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
-df_logistic.info()
-
-
-#startthe index on 1 instead on 0
-df_logistic.index = df_logistic.index +1
-df_logistic.head(5)
-
-
-#check the correlation
+df_logistic.index = df_logistic.index + 1
 st.write(df_logistic.corr())
 
-#conclusion: there is a positive correlation amon qty_ordered and qty_availability
-#and a large effect. This means that if the quantity ordered increases tha available quantity also increases
-
-# Use panda to create plot
-# Set index to have the right xtiks
+# Set plot
+fig1, ax1 = plt.subplots()
 df_logistic.set_index("productCode").plot(kind="bar", \
                  title="The stock of the 5 most ordered products.",\
                  xlabel="Product code",\
-                 # SET xtick normal rotation\
                  rot=0,\
-                 # Fct legend to set right datas
+                 ax = ax1,\
                  ylabel="Quantity").legend(["Ordered", "Available"])
-
-fig1, ax = plt.subplots()
-df_logistic.unstack(level=0).plot(kind="bar", ax= ax, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
 st.pyplot(fig1)
+
 """
 ## Finances 1
-The turnover of the orders of the last two months by country"""
+The turnover of the orders of the last two months by country
+"""
 
 query_finance_one = \
 "SELECT \
@@ -100,13 +81,7 @@ ORDER BY turnover DESC ;"
 
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
-df_finance1.info()
 df_finance1
-
-#insert the currency in variable turnover ($ vs€)
-#reset the index, so start at 1 the country with highest turnover....
-#create a bar chart
-#create a pie chart (need to convert to %)
 
 #insert the currency: we assume it is €
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
