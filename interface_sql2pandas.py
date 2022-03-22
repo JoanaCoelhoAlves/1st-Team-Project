@@ -20,16 +20,11 @@ import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
 
-links = ["<a href='#logistic'>Logistic</a>",\
-         "<a href='#finances-1'>Finances 1</a>",\
-         "<a href='#finances-2'>Finances 2</a>",\
-         "<a href='#sales'>Sales</a>",\
-         "<a href='#human-ressources'>Human ressources</a>"]
-for l in links:
-    st.sidebar.write(
-        l,
-        unsafe_allow_html=True
-    )
+# Define connection and query
+
+# # Connection with private password
+# p = getpass.getpass("What's the password?")
+# connection = mysql.connector.connect(user = 'toyscie', password = p, host = '51.68.18.102', port = '23456', database = 'toys_and_models', use_pure = True)
 
 # Connection with public password
 connection = mysql.connector.connect(**st.secrets["mysql"])
@@ -133,12 +128,17 @@ df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 
 
-finance2_plot= df_finance2.loc[:, ["orderDate", "month", "year"]]
-finance2_plot=finance2_plot.groupby(["year", "month"]).count()
-
 fig4, ax4 = plt.subplots()
-finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
+plt.title("Number of Orders per Month", size = 12)
+plt.ylabel("Frequency")
+plt.xlabel("Month")
+plt.legend(loc = "upper center", frameon = True, title= "Year") 
+plt.rcParams["figure.figsize"] = (10,5.5)
 st.pyplot(fig4)
+
+#finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+
 
 """
 ## Sales
@@ -213,12 +213,3 @@ gp_perf_year = df_hr.groupby(['year','month'], as_index=False)["amount"].sum()
 st.write("Position and turnover by month")
 df_hr
 
-for y in gp_perf_year['year'].unique():
-  pl = gp_perf_year[gp_perf_year['year'] == y]
-  plt.plot(pl['month'], pl['amount'], label=str(y) )
-plt.xticks(df_hr['month'].unique())
-plt.ylabel("Amount")
-plt.xlabel("Month")
-plt.title("Performence of sellers during a year")
-plt.legend()
-plt.show()
