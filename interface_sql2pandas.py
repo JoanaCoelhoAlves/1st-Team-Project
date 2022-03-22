@@ -154,23 +154,15 @@ ORDER BY productLine, MONTH(o.orderDate);'
 
 # sql to pandas
 df_sales = pd.read_sql_query(query_sales, con = connection)
-df_sales.head(10)
-
-#need to split the table into 2: the first one only contains values from the year 2020 and 2021
-#the second table only contains values from the tear 2021 and 2022 and then calculate the rate difference
-#make a line plot for each product line and differentiate different products with a different color and make
-#a second differentiation in terms of dash(something else) lines
-#y-axis rate and x-axis with the months
-#check the product line with the highest and lowest rate
-
-#split the original dataset with only values from 2020 and 2021
 first = df_sales.loc[(df_sales["year"] == 2020) | (df_sales["year"] == 2021),:]
-first
-
-
-#split the original dataset with only values from 2021 and 2022
 second = df_sales.loc[(df_sales["year"] == 2021) | (df_sales["year"] == 2022),:]
-second
+col1, col2 = st.columns(2)
+with col1:
+    st.header("Sales from 2020 - 2021")
+    first
+with col2:
+    st.header("Sales from 2021 - 2022")
+    second
 
 """
 ## Human ressources
