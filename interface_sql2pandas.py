@@ -78,6 +78,9 @@ df_logistic.set_index("productCode").plot(kind="bar", \
                  # Fct legend to set right datas
                  ylabel="Quantity").legend(["Ordered", "Available"])
 
+fig1, ax = plt.subplots()
+df_logistic.unstack(level=0).plot(kind="bar", ax= ax, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+st.pyplot(fig1)
 """
 ## Finances 1
 The turnover of the orders of the last two months by country"""
