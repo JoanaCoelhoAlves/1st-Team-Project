@@ -27,7 +27,7 @@ from matplotlib import pyplot as plt
 # connection = mysql.connector.connect(user = 'toyscie', password = p, host = '51.68.18.102', port = '23456', database = 'toys_and_models', use_pure = True)
 
 # Connection with public password
-connection = mysql.connector.connect((**st.secrets["mysql"]))
+connection = mysql.connector.connect(**st.secrets["mysql"])
 #query = "SELECT * from orders WHERE orderDate like '2022-02%'"
 
 """## Logistic: The stock of the 5 most ordered products.
