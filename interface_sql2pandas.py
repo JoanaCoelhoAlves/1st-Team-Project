@@ -81,18 +81,19 @@ ORDER BY turnover DESC ;"
 
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
+df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
 df_finance1
 
-#insert the currency: we assume it is €
-df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
-
-#reset the index to start at 1 and not at 0
-#df_finance1.index = df_finance1.index +1
-
-df_finance1.head(7)
-
 #create the bar chart
-df_finance1.plot.bar(x="country", y="turnover (€)", title= "The turnover of the orders in the last two months, by country", ylabel= "turnover (€)", legend = False,figsize= (10, 3))
+fig3, ax3 = plt.subplots()
+df_finance1.plot.bar(x="country", \
+                     y="turnover (€)", \
+                     title= "The turnover of the orders in the last two months, by country", \
+                     ylabel= "turnover (€)", \
+                     legend = False,\
+                     figsize= (10, 3),\
+                     ax=ax3)
+st.pyplot(fig3)
 
 """
 ## Finances 2
@@ -117,55 +118,22 @@ AND NOT status = "cancelled";' \
 
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
-
-#convert orderDate into a date
-#df_finance2["orderDate"] = pd.to_datetime(df_finance2["orderDate"], yearfirst=True)
-
-#convert shippedDate into a date
-#df_finance2["shippedDate"] = pd.to_datetime(df_finance2["shippedDate"], yearfirst=True)
-
-#check if the variable type changed
-#df_finance2.info()
-
-#NOTE: order 10334 is "ON HOLD" without shipped date (which is fine) however order
-#10165 has exactly the same comment as order 10334 but it was already Shipped conatining a
-#"Shipped Date" so there is dubious information regarding the interpretation of the data set
-#because of that we decided to not assign any value to missing comments since comments
-#are not mandatory
-
-#create a new variable "Lag" which is the difference between shipped date and order date
 df_finance2["Lag"] = df_finance2["shippedDate"] - df_finance2["orderDate"]
-df_finance2.head(5)
-
 maximum_lag= max(df_finance2["Lag"])
 minimum_lag = min(df_finance2["Lag"])
+
 print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag time is: " + str(minimum_lag) + "\n")
 
-#convert order date and shipped date to a date type donne
-#state that order 10334 is "ON HOLD" without shipped date (which is fine) however order 10165 has exactly the same comment  donne
-#but it's "Shipped" with a "Shipped Date" so there is an error on the original dataset which is comething to be discussed with the firm
-
-#add a new column with the time difference between shipped date and order date to see the lag donne
-#go to SQL and add a new column with the order amount(in money) it is on due and order customers (customer number) by DESC order to see which
-#clients are more "dangerous" NEED TO BE DONNED
-
-#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month
-#and do a line chart (x-axis is the months and the y-axis is the frequency of the new variable based on the OrderDate)
-#present the missing values on variable "comments" and variable "shippedDate" and state that we saw the missing values but decided not to do nothing (and explain why)
-
-
-#create a new variable based on OrderDate that displays the month and organize to see if there is a "bad" month and check the frequency for each month
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 
-#create the bar plot where on the x-axis are the months and the y-axis the frequency of the orders
+
 finance2_plot= df_finance2.loc[:, ["orderDate", "month", "year"]]
 finance2_plot=finance2_plot.groupby(["year", "month"]).count()
-finance2_plot.head(20)
 
-fig, ax = plt.subplots()
-finance2_plot.unstack(level=0).plot(kind="bar", ax= ax, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
-st.pyplot(fig)
+fig4, ax4 = plt.subplots()
+finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+st.pyplot(fig4)
 
 """
 ## Sales
