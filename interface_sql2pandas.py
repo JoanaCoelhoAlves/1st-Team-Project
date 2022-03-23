@@ -47,6 +47,7 @@ query_logistic = \
   ORDER BY SUM(o.quantityOrdered) DESC\
   LIMIT 5;"
 
+# Add names of the product
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
@@ -80,6 +81,7 @@ WHERE MONTH(o.shippedDate) >= MONTH(NOW() - INTERVAL 2 MONTH) AND YEAR(o.shipped
 GROUP BY c.country \
 ORDER BY turnover DESC ;"
 
+# Reorganise the display
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
@@ -162,13 +164,13 @@ ORDER BY productLine, MONTH(o.orderDate);'
 df_sales = pd.read_sql_query(query_sales, con = connection)
 first = df_sales.loc[(df_sales["year"] == 2020) | (df_sales["year"] == 2021),:]
 second = df_sales.loc[(df_sales["year"] == 2021) | (df_sales["year"] == 2022),:]
-col1, col2 = st.columns(2)
-with col1:
-    st.header("Sales from 2020 - 2021")
-    first
-with col2:
-    st.header("Sales from 2021 - 2022")
-    second
+st.header("Sales from 2020 - 2021")
+first
+st.header("Sales from 2021 - 2022")
+second
+
+# Create bar plot for each product line
+
 
 """## Human ressources
     Each month, the 2 sellers with the highest turnover.
@@ -196,19 +198,6 @@ SELECT * FROM t1 \
 
 # sql to pandas
 df_hr = pd.read_sql_query(query_hr, con = connection)
-
+# change the month number to name month
 st.write("Position and turnover by month")
 df_hr
-
-# fig5, ax5 = plt.subplots()
-# sn.lineplot(data=df_hr.head(2), \
-#             x="year",\
-#             y='amount',\
-#             hue="seller_id",\
-#             ax=ax4)
-# plt.title("Previous performence of the sellers of the month", size = 12)
-# plt.ylabel("Amount")
-# plt.xlabel("Date")
-# plt.legend(loc = "upper center", frameon = True, title= "Sellers")
-# plt.rcParams["figure.figsize"] = (10,5.5)
-# st.pyplot(fig5)
