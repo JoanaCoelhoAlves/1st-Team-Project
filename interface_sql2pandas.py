@@ -121,16 +121,11 @@ AND NOT status = "cancelled";' \
 
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
-df_finance2["Lag"] = df_finance2["shippedDate"] - df_finance2["orderDate"]
-maximum_lag= max(df_finance2["Lag"])
-minimum_lag = min(df_finance2["Lag"])
 
-print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag time is: " + str(minimum_lag) + "\n")
-
+st.header("Orders not payed until today")
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
-st.header("Orders not payed until today")
 df_finance2
 
 fig4, ax4 = plt.subplots()
