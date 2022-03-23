@@ -89,13 +89,14 @@ df_finance1
 
 #create the bar chart
 fig3, ax3 = plt.subplots()
-df_finance1.barplot(x="country", \
-                     y="turnover (€)", \
-                     title= "The turnover of the orders in the last two months, by country", \
-                     ylabel= "turnover (€)", \
-                     legend = False,\
-                     figsize= (10, 3),\
-                     ax=ax3)
+#df_finance1.barplot(x="country", \
+#                     y="turnover (€)", \
+#                     title= "The turnover of the orders in the last two months, by country", \
+#                     ylabel= "turnover (€)", \
+#                     legend = False,\
+#                     figsize= (10, 3),\
+#                     ax=ax3)
+sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 st.pyplot(fig3)
 
 """## Finances 2
