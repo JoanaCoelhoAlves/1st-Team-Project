@@ -172,11 +172,12 @@ idx = pd.date_range(start='2020-01', freq='M', periods=12)
 m = idx.to_series().dt.month.values
 m_names = idx.to_series().dt.month_name()
 for productLine in df_sales["productLine"].unique():
-  fig, ax = plt.subplots()
-  sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
-  plt.legend(loc = "upper right", frameon = True, title= "Year")
-  plt.title(productLine)
-  st.pyplot(fig)
+    if df_sales[df_sales['productLine'] == productLine]["productLine"].count() > 4:
+      fig, ax = plt.subplots()
+      sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
+      plt.legend(loc = "upper right", frameon = True, title= "Year")
+      plt.title(productLine)
+      st.pyplot(fig)
 
 
 """## Human ressources
