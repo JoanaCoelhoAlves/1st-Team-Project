@@ -154,7 +154,7 @@ query_sales = \
 FROM products AS p \
 JOIN orderdetails AS ot ON ot.productCode = p.productCode \
 JOIN orders AS o ON ot.orderNumber = o.orderNumber \
-GROUP BY YEAR(o.orderDate), MONTH(o.orderDate) \
+GROUP BY YEAR(o.orderDate), MONTH(o.orderDate), productLine \
 ORDER BY productLine, MONTH(o.orderDate);'
 
 # sql to pandas
