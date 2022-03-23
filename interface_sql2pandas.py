@@ -56,7 +56,7 @@ df_logistic
 
 # Set plot
 fig1, ax1 = plt.subplots()
-df_logistic.set_index("productName").plot(kind="bar", \
+df_logistic.set_index("productCode").plot(kind="bar", \
                  title="The stock of the 5 most ordered products.",\
                  xlabel="Product code",\
                  rot=0,\
