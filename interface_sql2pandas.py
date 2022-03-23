@@ -39,7 +39,7 @@ connection = mysql.connector.connect(**st.secrets["mysql"])
 
 # \ to go to the new line if the code is too long
 query_logistic = \
-  "SELECT o.productCode, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
+  "SELECT o.productCode, p.productName, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
   JOIN products as p ON p.productCode = o.productCode\
   GROUP BY p.productCode\
   ORDER BY SUM(o.quantityOrdered) DESC\
@@ -60,6 +60,7 @@ df_logistic.set_index("productCode").plot(kind="bar", \
                  rot=0,\
                  ax = ax1,\
                  ylabel="Quantity").legend(["Ordered", "Available"])
+
 st.pyplot(fig1)
 
 """## Finances 1
@@ -87,13 +88,14 @@ df_finance1
 
 #create the bar chart
 fig3, ax3 = plt.subplots()
-df_finance1.plot.bar(x="country", \
-                     y="turnover (€)", \
-                     title= "The turnover of the orders in the last two months, by country", \
-                     ylabel= "turnover (€)", \
-                     legend = False,\
-                     figsize= (10, 3),\
-                     ax=ax3)
+#df_finance1.barplot(x="country", \
+#                     y="turnover (€)", \
+#                     title= "The turnover of the orders in the last two months, by country", \
+#                     ylabel= "turnover (€)", \
+#                     legend = False,\
+#                     figsize= (10, 3),\
+#                     ax=ax3)
+sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 st.pyplot(fig3)
 
 """## Finances 2
@@ -127,7 +129,9 @@ print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag t
 
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
-
+df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
+st.header("Orders not payed until today")
+df_finance2
 
 fig4, ax4 = plt.subplots()
 sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
@@ -138,7 +142,7 @@ plt.legend(loc = "upper center", frameon = True, title= "Year")
 plt.rcParams["figure.figsize"] = (10,5.5)
 st.pyplot(fig4)
 
-#finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
+
 
 
 """## Sales
