@@ -62,8 +62,7 @@ df_logistic.set_index("productCode").plot(kind="bar", \
                  rot=0,\
                  ax = ax1,\
                  ylabel="Quantity").legend(["Ordered", "Available"])
-plt.title(size=15)
-plt.ylabel(size=14)
+
 st.pyplot(fig1)
 
 """## Finances 1
