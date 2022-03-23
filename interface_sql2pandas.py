@@ -10,8 +10,6 @@ Original file is located at
     https://colab.research.google.com/drive/1FRPmPH4y24A0vxSuqqQa6ZBOR1NU6C9U
 """
 
-#!pip install mysql-connector
-
 # Import libraries
 import mysql.connector
 import pandas as pd
@@ -150,7 +148,7 @@ st.pyplot(fig4)
 
 query_sales = \
 'SELECT \
-    {fn MONTHNAME(o.orderDate)} as month, \
+    MONTH(o.orderDate) as month, \
 	YEAR(o.orderDate) as year, \
     productLine, \
     SUM(ot.quantityOrdered) as rate \
@@ -170,6 +168,16 @@ st.header("Sales from 2021 - 2022")
 second
 
 # Create bar plot for each product line
+
+idx = pd.date_range(start='2020-01', freq='M', periods=12)
+m = idx.to_series().dt.month.values
+m_names = idx.to_series().dt.month_name()
+for productLine in df_sales["productLine"].unique():
+  fig, ax = plt.subplots()
+  sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
+  plt.legend(loc = "upper right", frameon = True, title= "Year")
+  plt.title(productLine)
+  st.pyplot(fig)
 
 
 """## Human ressources
