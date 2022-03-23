@@ -30,7 +30,7 @@ for l in links:
         l,
         unsafe_allow_html=True
     )
-    
+
 # Connection with public password
 connection = mysql.connector.connect(**st.secrets["mysql"])
 #query = "SELECT * from orders WHERE orderDate like '2022-02%'"
@@ -49,12 +49,9 @@ query_logistic = \
 
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
-df_logistic
-
-# Define logistic data
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
 df_logistic.index = df_logistic.index + 1
-st.write(df_logistic.corr())
+df_logistic
 
 # Set plot
 fig1, ax1 = plt.subplots()
@@ -66,9 +63,8 @@ df_logistic.set_index("productCode").plot(kind="bar", \
                  ylabel="Quantity").legend(["Ordered", "Available"])
 st.pyplot(fig1)
 
-"""
-## Finances 1
-The turnover of the orders of the last two months by country
+"""## Finances 1
+    The turnover of the orders of the last two months by country
 """
 
 query_finance_one = \
@@ -100,9 +96,9 @@ df_finance1.plot.bar(x="country", \
                      ax=ax3)
 st.pyplot(fig3)
 
+"""## Finances 2
+    Orders that have not yet been paid.
 """
-## Finances 2
-Orders that have not yet been paid."""
 
 query_finance_two = \
 'WITH sub_order AS (\
@@ -145,10 +141,10 @@ st.pyplot(fig4)
 #finance2_plot.unstack(level=0).plot(kind="bar", ax=ax4, rot = 0, layout= (3,12), xlabel= "Months", ylabel = "Frequency" , title= "Number of Orders per month" )
 
 
+"""## Sales
+    The number of products sold by category and by month,
+    with comparison and rate of change compared to the same month of the previous year.
 """
-## Sales
-The number of products sold by category and by month,
-with comparison and rate of change compared to the same month of the previous year."""
 
 query_sales = \
 'SELECT \
@@ -174,9 +170,9 @@ with col2:
     st.header("Sales from 2021 - 2022")
     second
 
+"""## Human ressources
+    Each month, the 2 sellers with the highest turnover.
 """
-## Human ressources
-Each month, the 2 sellers with the highest turnover."""
 
 query_hr = \
 'WITH t1 AS (SELECT \
@@ -200,20 +196,19 @@ SELECT * FROM t1 \
 
 # sql to pandas
 df_hr = pd.read_sql_query(query_hr, con = connection)
-gp_with_amount = df_hr.groupby(['year', 'seller_id', 'seller_first_name', 'seller_last_name'], as_index=False)["amount"].sum()\
-.sort_values('seller_id')
-gp_postion_one = df_hr[df_hr['position'] == 1].groupby(["seller_id", "year"], as_index=False)['position'].count()
-gp_postion_one.columns = ['seller_id', 'year', 'N 1st pos']
-gp_postion_two = df_hr[df_hr['position'] == 2].groupby(["seller_id", "year"], as_index=False)['position'].count()
-gp_postion_two.columns = ['seller_id', 'year', 'N 2nd pos']
-gp_with_amount = pd.merge(gp_with_amount, gp_postion_one, how = "left")
-gp_with_amount = pd.merge(gp_with_amount, gp_postion_two, how = "left")
-gp_with_amount.fillna(0, inplace=True)
-gp_with_amount['N 2nd pos'] = gp_with_amount['N 2nd pos'].astype("int32")
-gp_with_amount['N 1st pos'] = gp_with_amount['N 1st pos'].astype("int32")
-gp_with_amount = gp_with_amount.round(2)
-
-gp_perf_year = df_hr.groupby(['year','month'], as_index=False)["amount"].sum()
 
 st.write("Position and turnover by month")
 df_hr
+
+# fig5, ax5 = plt.subplots()
+# sn.lineplot(data=df_hr.head(2), \
+#             x="year",\
+#             y='amount',\
+#             hue="seller_id",\
+#             ax=ax4)
+# plt.title("Previous performence of the sellers of the month", size = 12)
+# plt.ylabel("Amount")
+# plt.xlabel("Date")
+# plt.legend(loc = "upper center", frameon = True, title= "Sellers")
+# plt.rcParams["figure.figsize"] = (10,5.5)
+# st.pyplot(fig5)
