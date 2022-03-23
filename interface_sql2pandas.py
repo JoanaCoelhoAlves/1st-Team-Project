@@ -126,6 +126,10 @@ st.header("Orders not payed until today")
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
+<<<<<<< HEAD
+=======
+st.write("Orders not payed until today")
+>>>>>>> 47e4da03059269aa88c77def611168152a3ffe7f
 df_finance2
 
 fig4, ax4 = plt.subplots()
