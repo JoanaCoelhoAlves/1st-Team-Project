@@ -132,7 +132,10 @@ print("The maximum lag time is: " + str(maximum_lag) + "\n" + "The minimum lag t
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 table_finance2= df_finance2.drop(columns=["comments","requiredDate"]).sort_values("year")
-table_finance2.head(len(table_finance2))
+#table_finance2.head(len(table_finance2))
+table_finance2.header("Orders not payed until today")
+table_finance2
+
 
 fig4, ax4 = plt.subplots()
 sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
