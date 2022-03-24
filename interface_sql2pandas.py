@@ -24,7 +24,7 @@ links = ["<a href='#Logistic'>Logistic</a>",\
          "<a href='#Finances'>Finances </a>",\
          #"<a href='#finances-2'>Finances 2</a>",\
          "<a href='#Sales'>Sales</a>",\
-         "<a href='#Human-Ressources'>Human ressources</a>"]
+         "<a href='#Human-Ressources'>Human Ressources</a>"]
 for l in links:
     st.sidebar.write(
         l,
