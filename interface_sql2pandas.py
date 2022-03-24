@@ -145,8 +145,6 @@ plt.rcParams["figure.figsize"] = (10,5.5)
 st.pyplot(fig4)
 
 
-
-
 """## Sales
     The number of products sold by category and by month,
     with comparison and rate of change compared to the same month of the previous year.
@@ -164,26 +162,29 @@ JOIN orders AS o ON ot.orderNumber = o.orderNumber \
 GROUP BY YEAR(o.orderDate), MONTH(o.orderDate), productLine \
 ORDER BY productLine, MONTH(o.orderDate);'
 
-# sql to pandas
+
 df_sales = pd.read_sql_query(query_sales, con = connection)
-# Version table 1
 df_display_sales = df_sales.pivot_table(index=["productLine", "month"], columns=['year'], fill_value=0).copy()
 df_display_sales.reset_index(inplace=True)
-# Using BlankIndex to print DataFrame without index
+
 blankIndex=[''] * len(df_display_sales)
 df_display_sales.index=blankIndex
 df_display_sales
-# Version table 2
-# df_display_sales = df_sales.pivot_table(index=["month"], columns=["productLine", 'year'], fill_value=0).copy()
-# df_display_sales.reset_index(inplace=True)
-# df_display_sales
-
-# Create bar plot for each product line
 
 idx = pd.date_range(start='2020-01', freq='M', periods=12)
 m = idx.to_series().dt.month.values
 m_names = idx.to_series().dt.month_name()
-for productLine in df_sales.sort_values("rate", ascending=False)["productLine"].unique():
+df_sales.sort_values("rate", ascending=False)["productLine"].unique()
+category_selected = st.multiselect(
+ 'Filter by product line(s) available :',
+ df_sales.sort_values("rate", ascending=False)["productLine"].unique(),
+ df_sales.sort_values("rate", ascending=False)["productLine"].unique()[0:3]
+)
+
+if not(len(category_selected) > 0):
+    category_selected = df_sales.sort_values("rate", ascending=False)["productLine"].unique()
+
+for productLine in category_selected:
     if df_sales[df_sales['productLine'] == productLine]["productLine"].count() > 4:
       fig, ax = plt.subplots()
       sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
