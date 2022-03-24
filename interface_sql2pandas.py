@@ -216,4 +216,6 @@ SELECT * FROM t1 \
 df_hr = pd.read_sql_query(query_hr, con = connection)
 # change the month number to name month
 st.write("Position and turnover by month")
-df_hr
+df_hr_display = df_hr.set_index(['year', 'month', "position"]).copy()
+df_hr_display.index.set_names({'year', 'month', "position"}, inplace=True)
+st.write(df_hr_display.to_html(), unsafe_allow_html=True)
