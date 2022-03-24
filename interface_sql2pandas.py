@@ -51,7 +51,7 @@ query_logistic = \
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
-st.write(df_logistic.style.hide_index().to_html(), unsafe_allow_html=True)
+st.write(df_logistic.style.hide_index().to_html(),unsafe_allow_html=True)
 
 # Set plot
 fig1, ax1 = plt.subplots()
