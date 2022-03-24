@@ -129,7 +129,7 @@ df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=Tru
 df_finance2
 
 fig4, ax4 = plt.subplots()
-sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
+sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4, order=df_finance2['month'].unique())
 plt.title("Number of Orders not payed per Month", size = 12)
 plt.ylabel("Frequency")
 plt.xlabel("Month")
