@@ -21,7 +21,7 @@ from matplotlib import pyplot as plt
 sn.set_palette(palette= "Set2")
 
 links = ["<a href='#Logistic'>Logistic</a>",\
-         "<a href='#Finances'>Finances 1</a>",\
+         "<a href='#Finances'>Finances </a>",\
          #"<a href='#finances-2'>Finances 2</a>",\
          "<a href='#Sales'>Sales</a>",\
          "<a href='#Human-Ressources'>Human ressources</a>"]
