@@ -159,8 +159,6 @@ ORDER BY productLine, MONTH(o.orderDate);'
 
 # sql to pandas
 df_sales = pd.read_sql_query(query_sales, con = connection)
-first = df_sales.loc[(df_sales["year"] == 2020) | (df_sales["year"] == 2021),:]
-second = df_sales.loc[(df_sales["year"] == 2021) | (df_sales["year"] == 2022),:]
 # Version table 1
 df_display_sales = df_sales.pivot_table(index=["productLine", "month"], columns=['year'], fill_value=0).copy()
 # Version table 2
@@ -177,6 +175,7 @@ for productLine in df_sales["productLine"].unique():
     if df_sales[df_sales['productLine'] == productLine]["productLine"].count() > 4:
       fig, ax = plt.subplots()
       sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
+      ax.set_ylim(ymax=df_sales["rate"].max() + 500, ymin=df_sales["rate"].min() )
       plt.legend(loc = "upper right", frameon = True, title= "Year")
       plt.title(productLine)
       st.pyplot(fig)
