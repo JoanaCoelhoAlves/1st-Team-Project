@@ -161,10 +161,16 @@ ORDER BY productLine, MONTH(o.orderDate);'
 df_sales = pd.read_sql_query(query_sales, con = connection)
 # Version table 1
 df_display_sales = df_sales.pivot_table(index=["productLine", "month"], columns=['year'], fill_value=0).copy()
+df_display_sales.reset_index(inplace=True)
+#st.write(df_display_sales.style.hide(["a", "b"])
+# Using BlankIndex to print DataFrame without index
+blankIndex=[''] * len(df_display_sales)
+df_display_sales.index=blankIndex
+df_display_sales
 # Version table 2
 # df_display_sales = df_sales.pivot_table(index=["month"], columns=["productLine", 'year'], fill_value=0).copy()
-df_display_sales.reset_index(inplace=True)
-df_display_sales
+# df_display_sales.reset_index(inplace=True)
+# df_display_sales
 
 # Create bar plot for each product line
 
