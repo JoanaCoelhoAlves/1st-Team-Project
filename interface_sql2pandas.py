@@ -161,8 +161,12 @@ ORDER BY productLine, MONTH(o.orderDate);'
 df_sales = pd.read_sql_query(query_sales, con = connection)
 first = df_sales.loc[(df_sales["year"] == 2020) | (df_sales["year"] == 2021),:]
 second = df_sales.loc[(df_sales["year"] == 2021) | (df_sales["year"] == 2022),:]
-
-st.write(df_sales.pivot_table(index=["productLine", "month"], columns=['year'], fill_value=0))
+# Version table 1
+df_display_sales = df_sales.pivot_table(index=["productLine", "month"], columns=['year'], fill_value=0).copy()
+# Version table 2
+# df_display_sales = df_sales.pivot_table(index=["month"], columns=["productLine", 'year'], fill_value=0).copy()
+df_display_sales.reset_index(inplace=True)
+df_display_sales
 
 # Create bar plot for each product line
 
