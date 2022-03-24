@@ -18,11 +18,13 @@ import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
 
-links = ["<a href='#logistic'>Logistic</a>",\
-         "<a href='#finances-1'>Finances 1</a>",\
-         "<a href='#finances-2'>Finances 2</a>",\
-         "<a href='#sales'>Sales</a>",\
-         "<a href='#human-ressources'>Human ressources</a>"]
+sn.set_palette(palette= "Set2")
+
+links = ["<a href='#Logistic'>Logistic</a>",\
+         "<a href='#Finances'>Finances </a>",\
+         #"<a href='#finances-2'>Finances 2</a>",\
+         "<a href='#Sales'>Sales</a>",\
+         "<a href='#Human-Ressources'>Human Ressources</a>"]
 for l in links:
     st.sidebar.write(
         l,
@@ -63,7 +65,7 @@ df_logistic.set_index("productCode").plot(kind="bar", \
 
 st.pyplot(fig1)
 
-"""## Finances 1
+"""## Finances
     The turnover of the orders of the last two months by country
 """
 
@@ -98,7 +100,7 @@ fig3, ax3 = plt.subplots()
 sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 st.pyplot(fig3)
 
-"""## Finances 2
+"""## Finances
     Orders that have not yet been paid.
 """
 
@@ -186,7 +188,7 @@ for productLine in df_sales.sort_values("rate", ascending=False)["productLine"].
       st.pyplot(fig)
 
 
-"""## Human ressources
+"""## Human Ressources
     Each month, the 2 sellers with the highest turnover.
 """
 
