@@ -171,7 +171,8 @@ df_display_sales
 idx = pd.date_range(start='2020-01', freq='M', periods=12)
 m = idx.to_series().dt.month.values
 m_names = idx.to_series().dt.month_name()
-for productLine in df_sales["productLine"].unique():
+
+for productLine in df_sales.sort_values("rate", ascending=False)["productLine"].unique():
     if df_sales[df_sales['productLine'] == productLine]["productLine"].count() > 4:
       fig, ax = plt.subplots()
       sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
