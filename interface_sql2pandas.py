@@ -113,10 +113,10 @@ LEFT JOIN orderdetails as od ON od.orderNumber = o.orderNumber \
 GROUP BY o.orderNumber \
 ) \
 SELECT * FROM orders \
-WHERE NOT orderNumber IN ( \
+WHERE orderNumber IN ( \
 SELECT o.orderNumber FROM sub_order as o \
 JOIN payments as p ON p.customerNumber = o.customerNumber \
-WHERE p.amount = o.amount_order) \
+WHERE p.amount < o.amount_order) \
 AND NOT status = "cancelled";' \
 
 # sql to pandas
