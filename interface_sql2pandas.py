@@ -102,7 +102,7 @@ fig3, ax3 = plt.subplots()
 sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 st.pyplot(fig3)
 
-st.code("Orders that haven't yet been paid."")
+st.code("Orders that haven't yet been paid.")
 
 query_finance_two = \
 'WITH sub_order AS (\
