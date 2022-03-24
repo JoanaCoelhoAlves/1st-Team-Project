@@ -99,7 +99,7 @@ fig3, ax3 = plt.subplots()
 #                     legend = False,\
 #                     figsize= (10, 3),\
 #                     ax=ax3)
-sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
+sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3, title= "Turnover at Country Level, in the last 2 Months")
 st.pyplot(fig3)
 
 st.code("Orders that haven't yet been paid.")
