@@ -176,7 +176,7 @@ for productLine in df_sales["productLine"].unique():
       fig, ax = plt.subplots()
       sn.barplot(ax = ax, x='month', y='rate', hue="year", data=df_sales[df_sales['productLine'] == productLine], order=m)
       ax.set_ylim(ymax=df_sales["rate"].max() + 500, ymin=df_sales["rate"].min() )
-      plt.legend(loc = "upper right", frameon = True, title= "Year")
+      plt.legend(loc = "upper left", frameon = True, title= "Year")
       plt.title(productLine)
       st.pyplot(fig)
 
