@@ -66,7 +66,7 @@ df_logistic.set_index("productCode").plot(kind="bar", \
 
 st.pyplot(fig1)
 
-"""## Finances 1
+"""## Finances 
     The turnover of the orders of the last two months by country
 """
 
@@ -103,7 +103,7 @@ sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 plt.title("Country turnover in the last 2 months", size = 12)
 st.pyplot(fig3)
 
-"""## Finances 2
+"""## Finances 
     Orders that have not yet been paid.
 """
 
@@ -192,7 +192,7 @@ for productLine in df_sales.sort_values("rate", ascending=False)["productLine"].
       st.pyplot(fig)
 
 
-"""## Human ressources
+"""## Human Ressources
     Each month, the 2 sellers with the highest turnover.
 """
 
