@@ -39,7 +39,7 @@ connection = mysql.connector.connect(**st.secrets["mysql"])
 
 # \ to go to the new line if the code is too long
 query_logistic = \
-  "SELECT o.productCode, p.productName, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
+  "SELECT o.productCode, p.productName, p.Line, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
   JOIN products as p ON p.productCode = o.productCode\
   GROUP BY p.productCode\
   ORDER BY SUM(o.quantityOrdered) DESC\
