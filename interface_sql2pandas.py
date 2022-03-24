@@ -51,16 +51,7 @@ query_logistic = \
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
-df_logistic.drop(columns=["index"], inplace=True)
-#df_logistic.index = df_logistic.index + 1
-
-#df_logistic.reset_index(inplace=True)
-# Using BlankIndex to print DataFrame without index
-#blankIndexL=[''] * len(df_logistic)
-#df_logistic.index=blankIndexL
-
-#st.write("Information about the 5 most ordered products")
-df_logistic
+st.write(df_logistic.style.hide_index().to_html(), unsafe_allow_html=True)
 
 # Set plot
 fig1, ax1 = plt.subplots()
