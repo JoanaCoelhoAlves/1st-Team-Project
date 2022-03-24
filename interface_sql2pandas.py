@@ -87,6 +87,7 @@ ORDER BY turnover DESC ;"
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
+st.write("Turnover in thelast 2 months at country level")
 df_finance1
 
 #create the bar chart
@@ -125,7 +126,7 @@ AND NOT status = "cancelled";' \
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
 
-st.header("Orders not payed until today")
+
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
