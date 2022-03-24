@@ -18,6 +18,8 @@ import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
 
+sn.set_palette(palette= "Set2")
+
 links = ["<a href='#logistic'>Logistic</a>",\
          "<a href='#finances-1'>Finances 1</a>",\
          "<a href='#finances-2'>Finances 2</a>",\
@@ -39,7 +41,7 @@ connection = mysql.connector.connect(**st.secrets["mysql"])
 
 # \ to go to the new line if the code is too long
 query_logistic = \
-  "SELECT o.productCode, p.productName, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
+  "SELECT o.productCode, p.productName, p.productLine, SUM(o.quantityOrdered) as qty_ordered, p.quantityInStock as available_qty FROM orderdetails as o\
   JOIN products as p ON p.productCode = o.productCode\
   GROUP BY p.productCode\
   ORDER BY SUM(o.quantityOrdered) DESC\
@@ -50,6 +52,7 @@ query_logistic = \
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
 df_logistic.index = df_logistic.index + 1
+st.write("Information about the 5 most ordered products")
 df_logistic
 
 # Set plot
@@ -84,6 +87,7 @@ ORDER BY turnover DESC ;"
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
+st.write("Turnover in thelast 2 months at country level")
 df_finance1
 
 #create the bar chart
@@ -122,7 +126,7 @@ AND NOT status = "cancelled";' \
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
 
-st.header("Orders not payed until today")
+
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
