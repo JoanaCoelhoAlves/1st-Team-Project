@@ -24,7 +24,7 @@ links = ["<a href='#Logistic'>Logistic</a>",\
          "<a href='#Finances'>Finances </a>",\
          #"<a href='#finances-2'>Finances 2</a>",\
          "<a href='#Sales'>Sales</a>",\
-         "<a href='#Human-Ressources'>Human Ressources</a>"]
+         "<a href='#Human-Resources'>Human Resources</a>"]
 for l in links:
     st.sidebar.write(
         l,
@@ -51,7 +51,9 @@ query_logistic = \
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
-st.write(df_logistic.style.hide_index().to_html() + "<br>",unsafe_allow_html=True)
+df_logistic.index = df_logistic.index + 1
+df_logistic
+#st.write(df_logistic.style.hide_index().to_html() + "<br>",unsafe_allow_html=True)
 
 # Set plot
 fig1, ax1 = plt.subplots()
@@ -85,6 +87,7 @@ ORDER BY turnover DESC ;"
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
+df_finance1.index = df_finance1.index + 1
 df_finance1
 
 #create the bar chart
@@ -99,9 +102,7 @@ fig3, ax3 = plt.subplots()
 sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
 st.pyplot(fig3)
 
-"""## Finances
-    Orders that have not yet been paid.
-"""
+st.code("Orders that haven't yet been paid."")
 
 query_finance_two = \
 'WITH sub_order AS (\
@@ -122,11 +123,11 @@ AND NOT status = "cancelled";' \
 
 # sql to pandas
 df_finance2 = pd.read_sql_query(query_finance_two, con = connection)
-
-st.header("Orders not payed until today")
 df_finance2['year'] = pd.DatetimeIndex(df_finance2['orderDate']).year
 df_finance2['month'] = pd.DatetimeIndex(df_finance2['orderDate']).month
 df_finance2.drop(columns=["comments","requiredDate", "shippedDate"], inplace=True)
+blankIndex=[''] * len(df_finance2)
+df_finance2.index=blankIndex
 df_finance2
 
 fig4, ax4 = plt.subplots()
@@ -187,7 +188,7 @@ for productLine in df_sales.sort_values("rate", ascending=False)["productLine"].
       st.pyplot(fig)
 
 
-"""## Human Ressources
+"""## Human Resources
     Each month, the 2 sellers with the highest turnover.
 """
 
