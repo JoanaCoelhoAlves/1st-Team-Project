@@ -100,6 +100,7 @@ fig3, ax3 = plt.subplots()
 #                     figsize= (10, 3),\
 #                     ax=ax3)
 sn.barplot(y="country", x="turnover (€)", data=df_finance1, ax=ax3)
+plt.title("Country turnover in the last 2 months", size = 12)
 st.pyplot(fig3)
 
 """## Finances 2
