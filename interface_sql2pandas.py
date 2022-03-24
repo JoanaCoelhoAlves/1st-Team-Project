@@ -51,7 +51,7 @@ query_logistic = \
 # sql to pandas
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
-df_logistic.drop(columns=["index"], inplace=True)
+#df_logistic.drop(columns=["index"], inplace=True)
 #df_logistic.index = df_logistic.index + 1
 
 #df_logistic.reset_index(inplace=True)
