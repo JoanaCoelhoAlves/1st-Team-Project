@@ -130,7 +130,7 @@ df_finance2
 
 fig4, ax4 = plt.subplots()
 sn.countplot(data= df_finance2, x="month", hue= "year", ax=ax4)
-plt.title("Number of Orders per Month", size = 12)
+plt.title("Number of Orders not payed per Month", size = 12)
 plt.ylabel("Frequency")
 plt.xlabel("Month")
 plt.legend(loc = "upper center", frameon = True, title= "Year")
