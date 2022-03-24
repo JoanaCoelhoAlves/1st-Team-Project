@@ -52,7 +52,7 @@ query_logistic = \
 df_logistic = pd.read_sql_query(query_logistic, con = connection)
 df_logistic['qty_ordered'] = df_logistic['qty_ordered'].astype('int')
 df_logistic.index = df_logistic.index + 1
-st.write("Information about the 5 most ordered products")
+#st.write("Information about the 5 most ordered products")
 df_logistic
 
 # Set plot
@@ -87,7 +87,7 @@ ORDER BY turnover DESC ;"
 # sql to pandas
 df_finance1 = pd.read_sql_query(query_finance_one, con = connection)
 df_finance1.rename(columns = {"turnover": "turnover (€)"}, inplace= True)
-st.write("Turnover in thelast 2 months at country level")
+#st.write("Turnover in thelast 2 months at country level")
 df_finance1
 
 #create the bar chart
@@ -218,5 +218,5 @@ SELECT * FROM t1 \
 # sql to pandas
 df_hr = pd.read_sql_query(query_hr, con = connection)
 # change the month number to name month
-st.write("Position and turnover by month")
+#st.write("Position and turnover by month")
 df_hr
