@@ -18,7 +18,8 @@ import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
 
-sn.set_palette(palette= "YlOrBr")
+#sn.set_palette(palette= "YlOrBr")
+sns.color_palette("ch:s=-.2,r=.6", as_cmap=True)
 
 links = ["<a href='#Logistic'>Logistic</a>",\
          "<a href='#Finances'>Finances </a>",\
