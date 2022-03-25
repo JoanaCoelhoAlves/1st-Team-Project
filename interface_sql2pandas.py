@@ -18,7 +18,7 @@ import getpass
 import seaborn as sn
 from matplotlib import pyplot as plt
 
-sn.set_palette(palette= "tab20c")
+sn.set_palette(palette= "Set1")
 #sn.color_palette("ch:s=-.2,r=.6", as_cmap=True)
 
 links = ["<a href='#Logistic'>Logistic</a>",\
